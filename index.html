@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Portifolio | Anderson Brandão</title>
+</head>
+
+<body>
+    <header>
+        <ul>
+            <li>
+                <a> Home</a>
+            </li>
+            <li>
+                <a> Projetos</a>
+            </li>
+            <li>
+                <a> Sobre</a>
+            </li>
+            <li>
+                <a> Contatos</a>
+            </li>
+        </ul>
+    </header>
+
+    <section class="principal">
+        <div>
+            <h1 class="titulo-Home">Olá, eu sou <span>Anderson</span>.</h1>
+            <p>Desenvolvedor criativo focado em construir experiencias digitais excepcionais e interfaces intuitivas.
+            </p>
+            <a class="botao efeito-cursor"> Ver projetos</a>
+        </div>
+    </section>
+
+    <section class="secao">
+        <h2 class="titulo-secao">Projetos</h2>
+
+        <div class="grade-projetos">
+
+            <div class="card-projeto efeito-cursor">
+                <img class="img-projeto" src="./img/Easy shop.png" alt="Easy shop" />
+
+                <div class="info-projeto">
+                    <h3>Pagina web de um Shopping</h3>
+                    <p>Criado pensando em facilitar a vida dos nossos clientes e visitantes</p>
+                    <a href="https://div-shopping.netlify.app/">Ver projeto →</a>
+                </div>
+            </div>
+
+            <div class="card-projeto efeito-cursor">
+                <img class="img-projeto" src="./img/Conversor.png" alt="Conversor de moedas" />
+
+                <div class="info-projeto">
+                    <h3>Conversor de Moedas</h3>
+                    <p>Um conversor de moedas criado com HTML, CSS e JavaScript</p>
+                    <a href="https://devconvertmoney.netlify.app/">Ver projeto →</a>
+                </div>
+            </div>
+
+            <div class="card-projeto efeito-cursor">
+                <img class="img-projeto" src="./img/Previsão.png" alt="Dev previsão" />
+
+                <div class="info-projeto">
+                    <h3>Previsão do Tempo</h3>
+                    <p>Um sistema desenvolvido com JavaScript, HTML e CSS.</p>
+                    <a href="https://strong-piroshki-28f09b.netlify.app/">Ver projeto →</a>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="secao">
+
+        <h2 class="titulo-secao">Sobre mim</h2>
+        <div class="Sobre">
+            <img class="img-sobre-mim" src="./img/IMG_0230.JPEG" alt="Anderson Brandão" />
+            <div class="conteudo-sobre-mim">
+                <h2>Dev com paixão por criar soluções digitais</h2>
+
+                <p>Minha jornada no desenvolvimento web começou há alguns anos, e desde então, tenho me dedicado a
+                    aprender e crescer na área. Adoro trabalhar em projetos que exigem criatividade e atenção aos
+                    detalhes, garantindo que cada interface seja intuitiva e agradável para os usuários.</p>
+
+                <p>Estou sempre aberto a colaborações e novas oportunidades, então sinta-se à vontade para entrar em
+                    contato!</p>
+
+                <div class="habilidades">
+                    <span class="tag-habilidades efeito-cursor">HTML 5</span>
+                    <span class="tag-habilidades efeito-cursor">CSS</span>
+                    <span class="tag-habilidades efeito-cursor">JavaScript 5</span>
+                    <span class="tag-habilidades efeito-cursor">Node</span>
+                    <span class="tag-habilidades efeito-cursor">React</span>
+                    <span class="tag-habilidades efeito-cursor">Git Hub</span>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="secao">
+        <h2 class="titulo-secao">Contato</h2>
+
+        <div class="botoes-contato">
+
+            <a href="https://wa.me/5577999106357?text=Ol%C3%A1%2C%20sou%20Anderson.%0ATudo%20bem%20com%20voc%C3%AA%3F!"
+                class="botao-contato Whatsapp efeito-cursor">
+                <span>WhatsApp</span>
+            </a>
+
+            <a href="mailto:andersonbteixeira@outlook.com" class="botao-contato Email efeito-cursor">
+                <span>E-mail</span>
+            </a>
+
+            <a href="https://www.linkedin.com/in/anderson-tbrand%C3%A3o/" class="botao-contato Linkedin efeito-cursor">
+                <span>Linkedin</span>
+            </a>
+
+            <a href="https://github.com/Andersonbrand" class="botao-contato GitHub efeito-cursor">
+                <span>GitHub</span>
+            </a>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>Feito com aprendizado Dev Club💜</p>
+    </footer>
+
+    <div class="cursor"></div>
+</body>
+
+<script>
+
+    const cursor = document.querySelector('.cursor');
+
+    document.addEventListener('mousemove', function (info) {
+        cursor.style.left = info.clientX + 'px';
+        cursor.style.top = info.clientY + 'px';
+    });
+</script>
+
+</html>
