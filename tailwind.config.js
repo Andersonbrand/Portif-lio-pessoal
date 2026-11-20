@@ -8,6 +8,7 @@ module.exports = {
     ],
     theme: {
         extend: {
+            opacity: { 2: '0.02', 3: '0.03', 4: '0.04', 6: '0.06', 8: '0.08', 12: '0.12', 16: '0.16' },
             colors: {
                 background: '#020817',
                 foreground: '#F8FAFC',

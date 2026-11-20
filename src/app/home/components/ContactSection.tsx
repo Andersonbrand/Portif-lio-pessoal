@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import ProjectTypeSelect from './ProjectTypeSelect';
 
 const contactLinks = [
     {
@@ -68,6 +69,7 @@ interface SubmitState {
 export default function ContactSection() {
     const sectionRef = useRef<HTMLElement>(null);
     const [form, setForm] = useState<FormState>({ name: '', email: '', message: '' });
+    const [projectType, setProjectType] = useState('Website');
     const [submitState, setSubmitState] = useState<SubmitState>({ status: 'idle', message: '' });
 
     useEffect(() => {
@@ -96,7 +98,7 @@ export default function ContactSection() {
             const res = await fetch('/api/contact', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(form),
+                body: JSON.stringify({ ...form, message: `[Tipo de projeto: ${projectType}]\n\n${form.message}` }),
             });
             const data = await res.json();
 
@@ -112,12 +114,13 @@ export default function ContactSection() {
     };
 
     return (
-        <section id="contact" ref={sectionRef} className="py-28 px-6 md:px-10 relative overflow-hidden bg-[#030B18]">
+        <section id="contact" ref={sectionRef} className="py-28 px-6 md:px-10 relative overflow-hidden section-deep">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(6,182,212,0.06)_0%,_transparent_70%)] pointer-events-none" />
             <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none" />
             <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-primary/8 blur-[80px] animate-float pointer-events-none" />
             <div className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full bg-accent/8 blur-[80px] animate-float pointer-events-none" style={{ animationDelay: '2s' }} />
             <div className="max-w-4xl mx-auto text-center relative z-10">
+                <p className="animate-on-scroll text-xs uppercase tracking-widest text-primary font-semibold mb-4">06 / Vamos conversar</p>
                 <div className="animate-on-scroll inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8">
                     <span className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
@@ -138,6 +141,10 @@ export default function ContactSection() {
                 <div className="animate-on-scroll delay-250 mb-12 text-left">
                     <form onSubmit={handleSubmit} className="bg-white/2 border border-white/8 rounded-2xl p-6 md:p-8 space-y-5" style={{ background: 'rgba(255,255,255,0.02)' }}>
                         <h3 className="text-lg font-semibold text-foreground mb-2">Envie uma mensagem</h3>
+                        <div className="flex flex-col gap-1.5">
+                            <label htmlFor="projectType" className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Tipo de projeto</label>
+                            <ProjectTypeSelect id="projectType" value={projectType} onChange={setProjectType} />
+                        </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             <div className="flex flex-col gap-1.5">
                                 <label htmlFor="name" className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Nome</label>
@@ -149,7 +156,7 @@ export default function ContactSection() {
                                     value={form.name}
                                     onChange={handleChange}
                                     placeholder="Seu nome"
-                                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-foreground placeholder-muted-foreground/50 text-sm focus:outline-none focus:border-primary/60 focus:bg-white/8 transition-all duration-200"
+                                    className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border-0 text-foreground placeholder-muted-foreground/50 text-sm focus:outline-none focus:bg-white/10 focus:shadow-[0_0_24px_-8px_rgba(6,182,212,0.6)] transition-all duration-200"
                                 />
                             </div>
                             <div className="flex flex-col gap-1.5">
@@ -162,7 +169,7 @@ export default function ContactSection() {
                                     value={form.email}
                                     onChange={handleChange}
                                     placeholder="seu@email.com"
-                                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-foreground placeholder-muted-foreground/50 text-sm focus:outline-none focus:border-primary/60 focus:bg-white/8 transition-all duration-200"
+                                    className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border-0 text-foreground placeholder-muted-foreground/50 text-sm focus:outline-none focus:bg-white/10 focus:shadow-[0_0_24px_-8px_rgba(6,182,212,0.6)] transition-all duration-200"
                                 />
                             </div>
                         </div>
@@ -176,7 +183,7 @@ export default function ContactSection() {
                                 value={form.message}
                                 onChange={handleChange}
                                 placeholder="Conte sobre seu projeto ou proposta..."
-                                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-foreground placeholder-muted-foreground/50 text-sm focus:outline-none focus:border-primary/60 focus:bg-white/8 transition-all duration-200 resize-none"
+                                className="w-full px-4 py-3 rounded-xl bg-white/[0.06] border-0 text-foreground placeholder-muted-foreground/50 text-sm focus:outline-none focus:bg-white/10 focus:shadow-[0_0_24px_-8px_rgba(6,182,212,0.6)] transition-all duration-200 resize-none"
                             />
                         </div>
 
@@ -215,10 +222,17 @@ export default function ContactSection() {
                                     <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                                     </svg>
-                                    Enviar mensagem
+                                    Solicitar orçamento
                                 </>
                             )}
                         </button>
+                        <a
+                            href={`https://wa.me/5577999106357?text=${encodeURIComponent(`Olá, Anderson! Vim pelo seu portfólio. Tenho um projeto do tipo "${projectType}"${form.name ? ` — meu nome é ${form.name}` : ''}.${form.message ? `\n\n${form.message}` : ''}`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full sm:w-auto sm:ml-3 inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border border-[#25D366]/40 text-[#25D366] font-semibold text-sm hover:bg-[#25D366]/10 transition-all duration-300">
+                            Enviar pelo WhatsApp
+                        </a>
                     </form>
                 </div>
 

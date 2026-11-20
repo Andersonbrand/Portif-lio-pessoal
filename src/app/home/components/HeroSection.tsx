@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import PortraitScene from './PortraitScene';
 
 const SCRAMBLE_CHARS = '!<>-_\\/[]{}—=+*^?#ABCDEFGHIJKLMNOPQRSTUVWXYZ01';
 
@@ -60,48 +61,6 @@ function ScrambleText({ text, className, startDelay = 0, loopEvery }: { text: st
     return <span className={className}>{display}</span>;
 }
 
-function BrandCard() {
-    const cardRef = useRef<HTMLDivElement>(null);
-    const [tilt, setTilt] = useState({ rx: 0, ry: 0, scale: 1 });
-    const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
-
-    const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        const el = cardRef.current;
-        if (!el) return;
-        const rect = el.getBoundingClientRect();
-        const px = (e.clientX - rect.left) / rect.width;
-        const py = (e.clientY - rect.top) / rect.height;
-        setTilt({ rx: (0.5 - py) * 24, ry: (px - 0.5) * 24, scale: 1.06 });
-        setGlare({ x: px * 100, y: py * 100, opacity: 0.4 });
-    };
-    const handleLeave = () => {
-        setTilt({ rx: 0, ry: 0, scale: 1 });
-        setGlare((g) => ({ ...g, opacity: 0 }));
-    };
-
-    return (
-        <div
-            ref={cardRef}
-            onMouseMove={handleMove}
-            onMouseLeave={handleLeave}
-            className="relative w-28 h-28 rounded-3xl flex items-center justify-center cursor-pointer transition-transform duration-300 ease-out will-change-transform"
-            style={{
-                background: 'linear-gradient(135deg, #06B6D4, #A78BFA)',
-                transform: `perspective(700px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) scale3d(${tilt.scale},${tilt.scale},${tilt.scale})`,
-                boxShadow: glare.opacity > 0 ? '0 20px 40px -12px rgba(6,182,212,0.45)' : '0 8px 20px -8px rgba(6,182,212,0.25)',
-            }}>
-
-            <span className="font-display italic font-bold text-4xl text-[#020817] select-none">AB</span>
-            <div
-                className="absolute inset-0 rounded-3xl pointer-events-none transition-opacity duration-300"
-                style={{
-                    opacity: glare.opacity,
-                    background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,0.6), transparent 60%)`,
-                }} />
-
-        </div>
-    );
-}
 
 function ParticleNetwork() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -222,13 +181,34 @@ function ParticleNetwork() {
     return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" aria-hidden="true" />;
 }
 
-export default function HeroSection() {
+/* Botão com elevação suave no hover (sem se mover em direção ao mouse, para nunca encostar no vizinho) */
+function MagneticLink({ href, className, children }: { href: string; className?: string; children: React.ReactNode }) {
     return (
-        <section className="relative min-h-screen w-full overflow-hidden flex flex-col justify-between border-b border-white/5">
+        <a href={href} className={`hero-btn ${className ?? ''}`}>
+            {children}
+        </a>
+    );
+}
+
+const heroTech = ['Next.js', 'React', 'TypeScript', 'JavaScript', 'Supabase', 'Tailwind CSS'];
+
+export default function HeroSection() {
+    const sectionRef = useRef<HTMLElement>(null);
+    const onMouseMove = (e: React.MouseEvent) => {
+        const el = sectionRef.current;
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        el.style.setProperty('--my', `${e.clientY - r.top}px`);
+    };
+    return (
+        <section id="home" ref={sectionRef} onMouseMove={onMouseMove} className="relative min-h-screen w-full overflow-hidden flex flex-col justify-between border-b border-white/5">
             <div className="absolute inset-0 z-0">
                 <div className="absolute inset-0 bg-[#020817]" />
                 <ParticleNetwork />
+                <div className="hero-spotlight absolute inset-0 pointer-events-none" aria-hidden="true" />
                 <div className="absolute inset-0 bg-gradient-to-b from-[#020817]/40 via-[#020817]/55 to-[#020817] pointer-events-none" />
+                <div className="hero-portrait-wash absolute inset-0 pointer-events-none" aria-hidden="true" />
                 <div className="grain-overlay" />
                 <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
             </div>
@@ -237,7 +217,8 @@ export default function HeroSection() {
 
             <div className="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-10 pb-16 md:pb-24 flex flex-col md:flex-row md:items-end justify-between gap-12">
                 <div className="max-w-3xl">
-                    <div className="mb-8 inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md hero-reveal hero-reveal-delay-1">
+                    <div className="mb-8 flex flex-wrap items-center gap-2 hero-reveal hero-reveal-delay-1">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
                         <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
@@ -245,6 +226,7 @@ export default function HeroSection() {
                         <span className="text-[11px] uppercase tracking-widest text-muted-foreground font-medium">
                             Disponível para novos projetos
                         </span>
+                    </div>
                     </div>
 
                     <div className="overflow-hidden mb-3">
@@ -261,18 +243,28 @@ export default function HeroSection() {
                     <p className="text-base md:text-lg font-light leading-relaxed text-muted-foreground max-w-lg hero-reveal hero-reveal-delay-4">
                         Construo landingpages, sistemas web e sites responsivos com HTML, CSS e JavaScript — evoluindo para React e Supabase em projetos reais de produção.
                     </p>
+
+                    <div className="flex flex-wrap gap-2 mt-7 hero-reveal hero-reveal-delay-4">
+                        {heroTech.map((t) => (
+                            <span key={t} className="hero-chip px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm font-mono text-[11px] text-muted-foreground">{t}</span>
+                        ))}
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-3 mt-8 hero-reveal hero-reveal-delay-4">
+                        <MagneticLink href="#projects" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-[#020817] text-sm font-semibold hover:bg-primary/90 glow-cyan">
+                            Explorar projetos
+                        </MagneticLink>
+                        <MagneticLink href="#contact" className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/15 text-sm font-medium text-foreground hover:border-primary/40 hover:bg-white/5">
+                            Vamos tirar sua ideia do papel
+                        </MagneticLink>
+                    </div>
                 </div>
 
-                <div className="flex flex-col gap-6 max-w-xs w-full hero-reveal hero-reveal-delay-4">
-                    <div className="relative w-full h-56 rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm gradient-border flex items-center justify-center">
-                        <div className="absolute inset-0 dot-grid opacity-40" />
-                        <div className="absolute w-40 h-40 rounded-full bg-primary/10 blur-2xl" />
-                        <BrandCard />
-
-                        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[#020817] to-transparent">
-                            <p className="text-sm font-semibold text-foreground">Anderson Brandão</p>
-                            <p className="text-xs text-muted-foreground">Guanambi, Bahia 🇧🇷</p>
-                        </div>
+                <div className="flex flex-col gap-6 md:max-w-sm w-full hero-reveal hero-reveal-delay-4">
+                    <PortraitScene />
+                    <div className="text-center -mt-2">
+                        <p className="text-sm font-semibold text-foreground">Anderson Brandão</p>
+                        <p className="text-xs text-muted-foreground">Guanambi, Bahia 🇧🇷</p>
                     </div>
 
                     <div className="flex items-center gap-3">

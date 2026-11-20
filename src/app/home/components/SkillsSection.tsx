@@ -47,13 +47,13 @@ export default function SkillsSection() {
     }, []);
 
     return (
-        <section id="skills" ref={sectionRef} className="py-24 px-6 md:px-10 bg-[#030B18] border-y border-white/5 relative overflow-hidden">
+        <section id="skills" ref={sectionRef} className="py-24 px-6 md:px-10 section-indigo border-y border-white/5 relative overflow-hidden">
             <div className="absolute inset-0 dot-grid opacity-50 pointer-events-none" />
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-primary/4 blur-[100px] pointer-events-none" />
 
             <div className="max-w-7xl mx-auto">
                 <div className="mb-14 animate-on-scroll">
-                    <span className="inline-block text-xs uppercase tracking-widest text-primary font-semibold mb-3">Stack técnica</span>
+                    <span className="inline-block text-xs uppercase tracking-widest text-primary font-semibold mb-3">04 / Stack técnica</span>
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                         <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground leading-tight">
                             Ferramentas &<br />

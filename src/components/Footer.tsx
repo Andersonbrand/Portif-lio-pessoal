@@ -35,36 +35,60 @@ const socialLinks = [
 
 export default function Footer() {
     return (
-        <footer className="border-t border-white/5 bg-[#020817] py-10 px-6 md:px-10">
-            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-                <div className="flex items-center gap-2">
-                    <AppLogo size={28} iconName="CodeBracketIcon" className="text-primary" />
-                    <span className="font-display text-sm font-semibold text-foreground hidden sm:block">
-                        Anderson<span className="text-primary">.dev</span>
-                    </span>
+        <footer className="border-t border-white/5 bg-[#020817] pt-16 pb-8 px-6 md:px-10">
+            <div className="max-w-7xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/5">
+                    <div className="md:col-span-2">
+                        <div className="flex items-center gap-2 mb-4">
+                            <AppLogo size={32} iconName="CodeBracketIcon" className="text-primary" />
+                            <span className="font-display text-lg font-semibold text-foreground">
+                                Anderson<span className="text-primary">.dev</span>
+                            </span>
+                        </div>
+                        <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">
+                            Desenvolvedor Front-End em Guanambi, Bahia. Landingpages, sistemas web e sites responsivos com React e Supabase.
+                        </p>
+                    </div>
+
+                    <div>
+                        <p className="font-mono text-xs uppercase tracking-[0.2em] text-primary mb-4">Navegação</p>
+                        <ul className="space-y-2.5 text-sm text-muted-foreground">
+                            {[['Início', '#home'], ['Sobre mim', '#about'], ['Experiência', '#experience'], ['Projetos', '#projects'], ['Soluções', '#services'], ['Contato', '#contact']].map(([l, h]) => (
+                                <li key={h}><a href={h} className="hover:text-foreground transition-colors">{l}</a></li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div>
+                        <p className="font-mono text-xs uppercase tracking-[0.2em] text-primary mb-4">Contato</p>
+                        <ul className="space-y-2.5 text-sm text-muted-foreground">
+                            <li><a href="mailto:andersonbteixeira@outlook.com" className="hover:text-foreground transition-colors break-all">andersonbteixeira@outlook.com</a></li>
+                            <li><a href="https://wa.me/5577999106357" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">(77) 99910-6357</a></li>
+                            <li>Guanambi, BA — Brasil</li>
+                        </ul>
+                        <div className="flex items-center gap-3 mt-5">
+                            {socialLinks?.map((s) => (
+                                <a
+                                    key={s?.label}
+                                    href={s?.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={s?.label}
+                                    className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/40 transition-all duration-300"
+                                >
+                                    {s?.icon}
+                                </a>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
-                <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                    <a href="#projects" className="hover:text-foreground transition-colors font-medium">Projetos</a>
-                    <a href="#skills" className="hover:text-foreground transition-colors font-medium">Skills</a>
-                    <a href="#about" className="hover:text-foreground transition-colors font-medium">Sobre</a>
-                    <a href="#contact" className="hover:text-foreground transition-colors font-medium">Contato</a>
-                </div>
-
-                <div className="flex items-center gap-4">
-                    {socialLinks?.map((s) => (
-                        <a
-                            key={s?.label}
-                            href={s?.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={s?.label}
-                            className="text-muted-foreground hover:text-primary transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
-                        >
-                            {s?.icon}
-                        </a>
-                    ))}
-                    <span className="text-muted-foreground text-xs ml-2">© 2026 Anderson Brandão</span>
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 text-xs text-muted-foreground">
+                    <p>© {new Date().getFullYear()} Anderson Brandão. Todos os direitos reservados.</p>
+                    <a href="#home" className="inline-flex items-center gap-1.5 hover:text-primary transition-colors">
+                        Voltar ao topo
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" /></svg>
+                    </a>
                 </div>
             </div>
         </footer>

@@ -355,3 +355,197 @@ body {
     background: rgba(6, 182, 212, 0.25);
     color: #F8FAFC;
 }
+
+/* ─── Screens carousel modal ─── */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.96) translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.animate-fade-in-scale {
+    animation: fadeInScale 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out both;
+}
+/* ─── Reference-inspired layer: loader, progress, marquee, spotlight, timeline ─── */
+.page-loader {
+    position: fixed; inset: 0; z-index: 200;
+    background: #020817;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 28px 32px;
+    transition: opacity .7s ease, visibility .7s ease;
+    animation: loaderFailsafe .6s ease 4.5s forwards;
+}
+.page-loader[data-done='true'] { opacity: 0; visibility: hidden; pointer-events: none; }
+@keyframes loaderFailsafe { to { opacity: 0; visibility: hidden; pointer-events: none; } }
+.page-loader-ring { position: relative; width: 148px; height: 148px; }
+.page-loader-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+.page-loader-track { stroke: rgba(255,255,255,.08); stroke-width: 1.5; }
+.page-loader-arc { stroke: #06B6D4; stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: 100; transition: stroke-dashoffset .12s linear; }
+
+.scroll-progress {
+    position: fixed; top: 0; left: 0; height: 2px; width: 100%; z-index: 60;
+    background: linear-gradient(90deg, #06B6D4, #A78BFA);
+    transform-origin: 0 50%; transform: scaleX(0);
+    pointer-events: none;
+}
+
+.marquee { display: flex; overflow: hidden; user-select: none; mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent); }
+.marquee-group { display: flex; flex-shrink: 0; align-items: center; min-width: 100%; justify-content: space-around; gap: 2.5rem; padding-right: 2.5rem; animation: marqueeScroll 38s linear infinite; }
+.marquee:hover .marquee-group { animation-play-state: paused; }
+@keyframes marqueeScroll { to { transform: translateX(-100%); } }
+
+.hero-spotlight {
+    background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 40%), rgba(6,182,212,.13), transparent 60%);
+    transition: background .15s ease-out;
+}
+
+.hero-chip { transition: border-color .25s, color .25s, transform .25s; }
+.hero-chip:hover { border-color: rgba(6,182,212,.45); color: #06B6D4; transform: translateY(-2px); }
+
+.timeline-line { background: linear-gradient(to bottom, rgba(6,182,212,.5), rgba(167,139,250,.25) 70%, transparent); }
+.timeline-dot { box-shadow: 0 0 0 4px #020817, 0 0 0 5px rgba(6,182,212,.4), 0 0 16px rgba(6,182,212,.5); }
+
+.num-card { position: relative; transition: border-color .3s, transform .3s, background .3s; }
+.num-card:hover { border-color: rgba(6,182,212,.35); transform: translateY(-4px); background: rgba(255,255,255,.04); }
+.num-card:hover .num-card-num { color: #06B6D4; }
+
+@media (prefers-reduced-motion: reduce) {
+    .marquee-group { animation: none; }
+    .page-loader { display: none; }
+}
+
+/* ─── Avatar scene ─── */
+@keyframes gemFloat {
+    0%, 100% { transform: translateY(0) rotate(var(--r0, -6deg)); }
+    50% { transform: translateY(-14px) rotate(var(--r1, 6deg)); }
+}
+.gem-float { animation: gemFloat var(--dur, 7s) ease-in-out var(--delay, 0s) infinite; }
+@keyframes orbitSpin { to { transform: rotate(360deg); } }
+.orbit-cw { animation: orbitSpin 60s linear infinite; transform-origin: 50% 50%; }
+.orbit-ccw { animation: orbitSpin 90s linear infinite reverse; transform-origin: 50% 50%; }
+@keyframes avatarBlink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.08); } }
+.avatar-blink { animation: avatarBlink 5.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes avatarBreath { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.avatar-breath { animation: avatarBreath 6s ease-in-out infinite; }
+.gem-wrap { transition: transform .25s ease-out; will-change: transform; }
+@media (prefers-reduced-motion: reduce) {
+    .gem-float, .orbit-cw, .orbit-ccw, .avatar-blink, .avatar-breath { animation: none; }
+}
+
+/* ─── Portrait scene (water) ─── */
+@keyframes bubbleRise {
+    0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+    12% { opacity: var(--bo, 0.5); }
+    50% { transform: translate(var(--bx, 10px), -46%) scale(1); }
+    100% { transform: translate(calc(var(--bx, 10px) * -0.6), -105%) scale(0.85); opacity: 0; }
+}
+.water-bubble { animation: bubbleRise var(--dur, 9s) ease-in-out var(--delay, 0s) infinite; }
+@keyframes rippleExpand {
+    0% { transform: translate(-50%, 0) scale(0.35); opacity: 0.55; }
+    100% { transform: translate(-50%, 0) scale(1); opacity: 0; }
+}
+.water-ripple { animation: rippleExpand 5.4s cubic-bezier(.2,.6,.3,1) var(--delay, 0s) infinite; }
+@keyframes waveShift { to { transform: translateX(-50%); } }
+.water-wave { animation: waveShift var(--dur, 12s) linear infinite; }
+@keyframes portraitFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.portrait-float { animation: portraitFloat 7s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+    .water-bubble, .water-ripple, .water-wave, .portrait-float { animation: none; }
+}
+
+/* ─── Code scene (seção Sobre) ─── */
+@keyframes codeCursorBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+.code-cursor {
+    display: inline-block;
+    width: 7px;
+    height: 1.1em;
+    margin: 0 1px;
+    vertical-align: text-bottom;
+    background: #06B6D4;
+    box-shadow: 0 0 8px rgba(6, 182, 212, 0.8);
+    animation: codeCursorBlink 1s steps(1) infinite;
+}
+@keyframes codeRain {
+    0% { transform: translateY(520px); opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { transform: translateY(-40px); opacity: 0; }
+}
+.code-rain { top: 0; animation: codeRain var(--dur, 16s) linear var(--delay, 0s) infinite; }
+@keyframes codeChipFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+.code-chip { animation: codeChipFloat 5s ease-in-out var(--delay, 0s) infinite; }
+.code-tilt { transition: transform .25s ease-out; will-change: transform; }
+@media (prefers-reduced-motion: reduce) {
+    .code-cursor, .code-rain, .code-chip { animation: none; }
+    .code-tilt { transform: none !important; }
+}
+
+/* ─── Fundos de seção: azul profundo mesclado ao tema (começa e termina no fundo da página) ─── */
+.section-deep {
+    background:
+        radial-gradient(ellipse 60% 45% at 12% 8%, rgba(6, 182, 212, 0.14), transparent 70%),
+        linear-gradient(180deg, #020817 0%, #0A1F3D 16%, #0D2B52 50%, #0A1F3D 84%, #020817 100%);
+}
+.section-indigo {
+    background:
+        radial-gradient(ellipse 55% 45% at 90% 12%, rgba(167, 139, 250, 0.16), transparent 70%),
+        radial-gradient(ellipse 50% 40% at 8% 92%, rgba(6, 182, 212, 0.12), transparent 70%),
+        linear-gradient(180deg, #020817 0%, #0E1B40 16%, #151F55 50%, #0E1B40 84%, #020817 100%);
+}
+html.dark .section-wash::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 65% 50% at 88% 0%, rgba(6, 182, 212, 0.11), transparent 70%),
+        radial-gradient(ellipse 55% 45% at 6% 100%, rgba(99, 102, 241, 0.10), transparent 70%);
+}
+html.dark .section-wash-alt::before {
+    background:
+        radial-gradient(ellipse 65% 50% at 10% 0%, rgba(167, 139, 250, 0.10), transparent 70%),
+        radial-gradient(ellipse 55% 45% at 92% 100%, rgba(6, 182, 212, 0.11), transparent 70%);
+}
+
+/* Hero: névoa azul cobrindo o lado do retrato */
+.hero-portrait-wash {
+    background:
+        radial-gradient(ellipse 48% 62% at 80% 56%, rgba(14, 140, 220, 0.06), transparent 72%),
+        radial-gradient(ellipse 30% 40% at 96% 12%, rgba(6, 182, 212, 0.04), transparent 70%);
+}
+
+/* Campos de formulário: sem borda e sem fundo branco do autofill do navegador */
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+    -webkit-text-fill-color: #F8FAFC;
+    -webkit-box-shadow: 0 0 0 1000px #0A1628 inset;
+    caret-color: #06B6D4;
+}
+
+/* Botões do hero: elevação suave, sem deslocamento lateral */
+.hero-btn { transition: transform .25s ease, box-shadow .3s ease, background-color .3s ease, border-color .3s ease; }
+.hero-btn:hover { transform: translateY(-2px); }
+.hero-btn:active { transform: translateY(0); }
+
+/* Sem faixa clara ao "puxar" a página no topo/rodapé (overscroll) */
+html { background-color: var(--background); overscroll-behavior-y: none; }
+body { overscroll-behavior-y: none; }

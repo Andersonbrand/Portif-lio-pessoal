@@ -12,6 +12,14 @@ export const metadata: Metadata = {
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
     title: 'Anderson Brandão — Desenvolvedor Front-End',
     description: 'Portfólio de Anderson Brandão, desenvolvedor Front-End especializado em HTML, CSS e JavaScript. Landingpages, sistemas web e sites responsivos.',
+    openGraph: {
+        title: 'Anderson Brandão — Desenvolvedor Front-End',
+        description: 'Landingpages, sistemas web e sites responsivos com HTML, CSS, JavaScript, React e Supabase.',
+        locale: 'pt_BR',
+        type: 'website',
+        siteName: 'Anderson.dev',
+    },
+    authors: [{ name: 'Anderson Brandão' }],
     icons: {
         icon: [
             { url: '/favicon.ico', sizes: 'any' }

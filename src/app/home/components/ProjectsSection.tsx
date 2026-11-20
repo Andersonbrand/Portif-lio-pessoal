@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import ScreensCarouselModal, { CarouselSlide } from './ScreensCarousel';
 
 interface Project {
     id: number;
@@ -11,8 +12,71 @@ interface Project {
     domain?: string;
     image?: string;
     locked?: boolean;
+    private?: boolean;
     colSpan?: string;
+    screens?: CarouselSlide[];
 }
+
+const logiflowScreens: CarouselSlide[] = [
+    {
+        image: '/assets/images/carousel/lf-login.jpg',
+        title: 'Acesso restrito',
+        description: 'Autenticação por e-mail e senha, com área exclusiva para administradores e equipe operacional da transportadora.'
+    },
+    {
+        image: '/assets/images/carousel/lf-dashboard.jpg',
+        title: 'Dashboard em tempo real',
+        description: 'Visão geral de romaneios ativos, utilização da frota e peso despachado no dia, consolidando os indicadores operacionais em um só lugar.',
+        redacted: true
+    },
+    {
+        image: '/assets/images/carousel/lf-veiculos.jpg',
+        title: 'Gestão de frota',
+        description: 'Cadastro completo de veículos e carretas, com capacidade de carga, consumo médio e status de cada unidade.',
+        redacted: true
+    },
+    {
+        image: '/assets/images/carousel/lf-financeiro.jpg',
+        title: 'Módulo financeiro',
+        description: 'Acompanhamento de volume carregado e frete total por origem, dando suporte à análise de custos de cada rota.',
+        redacted: true
+    },
+    {
+        image: '/assets/images/carousel/lf-mapa-vendas.jpg',
+        title: 'Mapa de vendas',
+        description: 'Visualização geográfica do volume de vendas por cidade atendida, facilitando a leitura da operação em escala regional.'
+    }
+];
+
+const grupoHcScreens: CarouselSlide[] = [
+    {
+        image: '/assets/images/carousel/ec-home.jpg',
+        title: 'Página inicial',
+        description: 'Apresentação das marcas do grupo com chamadas diretas para catálogo de produtos e solicitação de orçamento.'
+    },
+    {
+        image: '/assets/images/carousel/ec-categorias.jpg',
+        title: 'Catálogo por empresa',
+        description: 'Navegação por categorias, com o portfólio de produtos organizado por cada empresa do grupo.'
+    },
+    {
+        image: '/assets/images/carousel/ec-produtos.jpg',
+        title: 'Listagem de produtos',
+        description: 'Busca e filtro de produtos com imagens, pensados para facilitar a navegação em um catálogo extenso.'
+    },
+    {
+        image: '/assets/images/carousel/ec-orcamento.jpg',
+        title: 'Formulário de orçamento',
+        description: 'Solicitação de orçamento sem compromisso diretamente pelo site, com envio dos dados de contato do cliente.',
+        redacted: true
+    },
+    {
+        image: '/assets/images/carousel/ec-login.jpg',
+        title: 'Área do cliente',
+        description: 'Login para acompanhamento de pedidos e histórico de compras na loja.',
+        redacted: true
+    }
+];
 
 const projects: Project[] = [
     {
@@ -22,16 +86,17 @@ const projects: Project[] = [
         tags: ['React', 'Supabase'],
         image: '/assets/images/projects/logiflow.jpg',
         locked: true,
-        colSpan: 'md:col-span-2'
+        colSpan: 'md:col-span-2',
+        screens: logiflowScreens
     },
     {
         id: 2,
         title: 'Grupo HC — Comercial Araguaia',
         description: 'Site institucional e catálogo para um grupo de materiais de construção e aço em Guanambi-BA, com apresentação de produtos e formulário de orçamento.',
         tags: ['Next.js', 'E-commerce'],
-        liveUrl: 'https://e-commerce-araguaia.vercel.app/',
-        domain: 'e-commerce-araguaia.vercel.app',
-        image: '/assets/images/projects/grupo-hc.jpg'
+        image: '/assets/images/projects/grupo-hc.jpg',
+        private: true,
+        screens: grupoHcScreens
     },
     {
         id: 3,
@@ -82,6 +147,7 @@ const projects: Project[] = [
 
 export default function ProjectsSection() {
     const sectionRef = useRef<HTMLElement>(null);
+    const [openProject, setOpenProject] = useState<Project | null>(null);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -99,7 +165,7 @@ export default function ProjectsSection() {
     }, []);
 
     return (
-        <section id="projects" ref={sectionRef} className="py-24 px-6 md:px-10 bg-background relative overflow-hidden">
+        <section id="projects" ref={sectionRef} className="py-24 px-6 md:px-10 bg-background relative overflow-hidden isolate section-wash section-wash-alt">
             <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-accent/5 blur-[120px] pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
 
@@ -107,7 +173,7 @@ export default function ProjectsSection() {
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
                     <div className="animate-on-scroll">
                         <span className="inline-block text-xs uppercase tracking-widest text-primary font-semibold mb-3">
-                            Projetos
+                            03 / Projetos
                         </span>
                         <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground leading-tight">
                             Trabalhos <span className="italic text-muted-foreground font-light">recentes</span>
@@ -128,15 +194,24 @@ export default function ProjectsSection() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                     {projects.map((project, i) =>
-                        <ProjectCard key={project.id} project={project} index={i} />
+                        <ProjectCard key={project.id} project={project} index={i} onOpenScreens={() => setOpenProject(project)} />
                     )}
                 </div>
             </div>
+
+            {openProject?.screens &&
+                <ScreensCarouselModal
+                    open
+                    onClose={() => setOpenProject(null)}
+                    title={openProject.title}
+                    accent={openProject.locked ? 'accent' : 'primary'}
+                    slides={openProject.screens} />
+            }
         </section>);
 
 }
 
-function ProjectCard({ project, index }: { project: Project; index: number; }) {
+function ProjectCard({ project, index, onOpenScreens }: { project: Project; index: number; onOpenScreens: () => void; }) {
     const delayClass = ['', 'delay-100', 'delay-200', 'delay-300'][index % 4] || '';
 
     return (
@@ -144,7 +219,7 @@ function ProjectCard({ project, index }: { project: Project; index: number; }) {
             className={`animate-on-scroll ${delayClass} ${project.colSpan || ''} group relative rounded-2xl overflow-hidden border ${project.locked ? 'border-accent/25' : 'border-white/8'} bg-card card-shimmer`}
             style={{ background: 'rgba(255,255,255,0.02)' }}>
 
-            <BrowserChrome domain={project.domain} locked={project.locked} />
+            <BrowserChrome domain={project.domain} locked={project.locked || project.private} />
             <ThumbPreview image={project.image} locked={project.locked} title={project.title} />
 
             <div className="p-6">
@@ -170,7 +245,17 @@ function ProjectCard({ project, index }: { project: Project; index: number; }) {
                     )}
                 </div>
 
-                {project.locked ?
+                {project.screens &&
+                    <button
+                        onClick={onOpenScreens}
+                        className={`inline-flex items-center gap-1.5 text-xs font-semibold mb-3 mr-4 ${project.locked ? 'text-accent hover:text-accent/80' : 'text-primary hover:text-primary/80'} transition-colors`}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4-4a3 3 0 014 0l4 4m-2-2l1-1a3 3 0 014 0l2 2M4 6h16a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V7a1 1 0 011-1z" />
+                        </svg>
+                        Ver telas do sistema ({project.screens.length})
+                    </button>
+                }
+                {(project.locked || project.private) ?
                     <p className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
                         <LockIcon /> Acesso sob demonstração
                     </p>
@@ -184,7 +269,7 @@ function ProjectCard({ project, index }: { project: Project; index: number; }) {
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
-                        Ver live
+                        Ver site
                     </a>
                 }
             </div>
