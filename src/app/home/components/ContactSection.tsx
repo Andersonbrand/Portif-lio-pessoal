@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import ProjectTypeSelect from './ProjectTypeSelect';
+import DotGrid from './DotGrid';
 
 const contactLinks = [
     {
@@ -116,7 +117,7 @@ export default function ContactSection() {
     return (
         <section id="contact" ref={sectionRef} className="py-28 px-6 md:px-10 relative overflow-hidden section-deep">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(6,182,212,0.06)_0%,_transparent_70%)] pointer-events-none" />
-            <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none" />
+            <DotGrid className="absolute inset-0 w-full h-full pointer-events-none" />
             <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-primary/8 blur-[80px] animate-float pointer-events-none" />
             <div className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full bg-accent/8 blur-[80px] animate-float pointer-events-none" style={{ animationDelay: '2s' }} />
             <div className="max-w-4xl mx-auto text-center relative z-10">

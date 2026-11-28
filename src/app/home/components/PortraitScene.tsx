@@ -3,20 +3,25 @@
 import React, { useRef } from 'react';
 
 const bubbles = [
-    { left: '8%', size: 8, dur: '10s', delay: '0s', bx: '14px', bo: 0.45 },
-    { left: '18%', size: 5, dur: '8s', delay: '-3s', bx: '-10px', bo: 0.5 },
-    { left: '30%', size: 11, dur: '12s', delay: '-6s', bx: '16px', bo: 0.35 },
-    { left: '46%', size: 6, dur: '9s', delay: '-1.5s', bx: '-12px', bo: 0.5 },
-    { left: '60%', size: 9, dur: '11s', delay: '-7s', bx: '12px', bo: 0.4 },
-    { left: '72%', size: 5, dur: '8.5s', delay: '-4s', bx: '-8px', bo: 0.55 },
-    { left: '84%', size: 10, dur: '13s', delay: '-9s', bx: '14px', bo: 0.35 },
-    { left: '92%', size: 6, dur: '9.5s', delay: '-2s', bx: '-14px', bo: 0.45 }
+    { left: '6%', size: 8, dur: '10s', delay: '0s', bx: '14px', bo: 0.45 },
+    { left: '16%', size: 5, dur: '8s', delay: '-3s', bx: '-10px', bo: 0.5 },
+    { left: '28%', size: 11, dur: '12s', delay: '-6s', bx: '16px', bo: 0.35 },
+    { left: '70%', size: 6, dur: '9s', delay: '-1.5s', bx: '-12px', bo: 0.5 },
+    { left: '80%', size: 9, dur: '11s', delay: '-7s', bx: '12px', bo: 0.4 },
+    { left: '90%', size: 5, dur: '8.5s', delay: '-4s', bx: '-8px', bo: 0.55 }
 ];
 
-const featherMask =
-    'linear-gradient(to bottom, transparent 0%, #000 7%, #000 80%, transparent 100%), linear-gradient(to right, transparent 0%, #000 9%, #000 88%, transparent 100%)';
-
-const wavePath = 'M0 20 Q 25 4 50 20 T 100 20 T 150 20 T 200 20 V 40 H 0 Z';
+// trechos de código flutuando atrás da foto (só nas laterais, para nunca competir com o rosto)
+const codeTokens = [
+    { t: '</>', left: '2%', top: '14%', dur: '9s', delay: '0s', s: 15 },
+    { t: 'const dev = true;', left: '-8%', top: '36%', dur: '11s', delay: '-4s', s: 11 },
+    { t: '{ }', left: '10%', top: '60%', dur: '10s', delay: '-2s', s: 17 },
+    { t: 'npm run dev', left: '-2%', top: '78%', dur: '12s', delay: '-7s', s: 11 },
+    { t: '=>', left: '86%', top: '10%', dur: '10s', delay: '-3s', s: 16 },
+    { t: 'useState()', left: '74%', top: '30%', dur: '12s', delay: '-6s', s: 11 },
+    { t: '[ ]', left: '88%', top: '54%', dur: '9s', delay: '-1s', s: 17 },
+    { t: 'git push', left: '76%', top: '76%', dur: '11s', delay: '-8s', s: 11 }
+];
 
 export default function PortraitScene() {
     const ref = useRef<HTMLDivElement>(null);
@@ -38,34 +43,75 @@ export default function PortraitScene() {
             ref={ref}
             onMouseMove={onMove}
             onMouseLeave={onLeave}
-            className="relative w-full max-w-[340px] mx-auto aspect-[3/4] select-none"
+            className="relative w-full max-w-[360px] mx-auto aspect-[4/5] select-none"
             role="img"
             aria-label="Retrato de Anderson Brandão, desenvolvedor Front-End">
 
-            {/* atmosfera azul: gradiente radial muito maior que a foto, sem bordas, que dissolve no fundo do hero */}
+            {/* 1. atmosfera: névoa azul bem maior que a cena, sem bordas, dissolvendo no fundo do hero */}
             <div
-                className="absolute pointer-events-none portrait-aura"
+                className="absolute pointer-events-none"
                 aria-hidden="true"
                 style={{
-                    inset: '-38% -55%',
+                    inset: '-30% -60%',
                     background:
-                        'radial-gradient(closest-side, rgba(14,140,220,0.10) 0%, rgba(6,182,212,0.05) 38%, rgba(99,102,241,0.02) 62%, transparent 100%)'
+                        'radial-gradient(closest-side, rgba(14,120,220,0.22) 0%, rgba(6,182,212,0.09) 40%, rgba(99,102,241,0.03) 66%, transparent 100%)'
                 }} />
 
-            {/* soft aqua glow */}
-            <div className="absolute inset-x-[-6%] top-[8%] bottom-[6%] rounded-full bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 blur-3xl" />
+            {/* 2. halo atrás do corpo: é ele que separa a camisa preta do fundo escuro */}
+            <div
+                className="absolute inset-x-[-10%] top-[2%] bottom-[8%] rounded-full pointer-events-none portrait-halo"
+                aria-hidden="true"
+                style={{
+                    background:
+                        'radial-gradient(ellipse 50% 50% at 50% 48%, rgba(34,150,235,0.62) 0%, rgba(6,182,212,0.34) 34%, rgba(37,99,235,0.14) 62%, transparent 82%)',
+                    filter: 'blur(10px)'
+                }} />
 
-            {/* water ripples at the base */}
-            <div className="absolute left-1/2 bottom-[1%] w-[125%] h-[16%] -translate-x-1/2 pointer-events-none" aria-hidden="true">
-                {[0, 1.8, 3.6].map((d) => (
+            {/* 3. anéis orbitais com nós de luz (dev + órbita, mesmo vocabulário da seção Sobre) */}
+            <div
+                className="absolute left-1/2 top-[44%] w-[132%] aspect-square -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                aria-hidden="true"
+                style={{
+                    transform: 'translate(calc(-50% + var(--px, 0) * -10px), calc(-50% + var(--py, 0) * -8px))',
+                    WebkitMaskImage: 'radial-gradient(closest-side, #000 62%, transparent 100%)',
+                    maskImage: 'radial-gradient(closest-side, #000 62%, transparent 100%)'
+                }}>
+                <svg className="absolute inset-0 w-full h-full orbit-cw" viewBox="0 0 400 400" fill="none">
+                    <circle cx="200" cy="200" r="150" stroke="#06B6D4" strokeOpacity="0.28" strokeWidth="1" strokeDasharray="2 7" />
+                    <circle cx="200" cy="50" r="4" fill="#06B6D4" />
+                    <circle cx="200" cy="50" r="10" fill="#06B6D4" fillOpacity="0.18" />
+                    <circle cx="344" cy="248" r="3" fill="#A78BFA" />
+                </svg>
+                <svg className="absolute inset-0 w-full h-full orbit-ccw" viewBox="0 0 400 400" fill="none">
+                    <circle cx="200" cy="200" r="118" stroke="#38BDF8" strokeOpacity="0.22" strokeWidth="1" />
+                    <circle cx="200" cy="200" r="184" stroke="#A78BFA" strokeOpacity="0.16" strokeWidth="1" strokeDasharray="14 10" />
+                    <circle cx="86" cy="284" r="3.5" fill="#38BDF8" />
+                    <circle cx="316" cy="96" r="3" fill="#A78BFA" />
+                </svg>
+            </div>
+
+            {/* 4. código flutuante (profundidade média: se move um pouco com o mouse) */}
+            <div
+                className="absolute inset-x-[-6%] inset-y-0 pointer-events-none"
+                aria-hidden="true"
+                style={{ transform: 'translate(calc(var(--px, 0) * -16px), calc(var(--py, 0) * -10px))' }}>
+                {codeTokens.map((c) => (
                     <span
-                        key={d}
-                        className="water-ripple absolute left-1/2 top-0 w-full h-full rounded-[50%] border border-primary/40"
-                        style={{ ['--delay' as string]: `${d}s` }} />
+                        key={c.t}
+                        className="code-drift absolute font-mono whitespace-nowrap text-primary/45"
+                        style={{
+                            left: c.left,
+                            top: c.top,
+                            fontSize: c.s,
+                            ['--dur' as string]: c.dur,
+                            ['--delay' as string]: c.delay
+                        }}>
+                        {c.t}
+                    </span>
                 ))}
             </div>
 
-            {/* rising bubbles */}
+            {/* 5. bolhas subindo (mantém a identidade "água" do hero) */}
             <div
                 className="absolute inset-x-[-14%] inset-y-[2%] pointer-events-none"
                 aria-hidden="true"
@@ -90,55 +136,54 @@ export default function PortraitScene() {
                 ))}
             </div>
 
-            {/* portrait: black backdrop converted to transparency, bottom edge fades out */}
+            {/* 6. chão de luz + ondas: a foto "pisa" numa poça azul */}
             <div
-                className="absolute inset-0 gem-wrap portrait-float"
-                style={{ transform: 'translate(calc(var(--px, 0) * 8px), calc(var(--py, 0) * 6px))' }}>
-                {/* base escura sob a foto: os pixels semitransparentes (cabelo, camisa) continuam escuros
-                    como na imagem original, em vez de clarearem com o azul do fundo */}
-                {[0, 1, 2].map((n) => (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                        key={n}
-                        src="/assets/images/anderson-portrait.webp"
-                        alt=""
-                        aria-hidden="true"
-                        draggable={false}
-                        className="absolute inset-0 w-full h-full object-cover"
-                        style={{
-                            filter: 'brightness(0)',
-                            WebkitMaskImage: featherMask,
-                            maskImage: featherMask,
-                            WebkitMaskComposite: 'source-in',
-                            maskComposite: 'intersect'
-                        }} />
+                className="absolute left-1/2 bottom-[-3%] w-[150%] h-[26%] -translate-x-1/2 pointer-events-none"
+                aria-hidden="true"
+                style={{
+                    background:
+                        'radial-gradient(ellipse 50% 50% at 50% 38%, rgba(34,150,235,0.55) 0%, rgba(6,182,212,0.22) 42%, transparent 72%)',
+                    filter: 'blur(6px)'
+                }} />
+            <div className="absolute left-1/2 bottom-[-2%] w-[130%] h-[16%] -translate-x-1/2 pointer-events-none" aria-hidden="true">
+                {[0, 1.8, 3.6].map((d) => (
+                    <span
+                        key={d}
+                        className="water-ripple absolute left-1/2 top-0 w-full h-full rounded-[50%] border border-primary/40"
+                        style={{ ['--delay' as string]: `${d}s` }} />
                 ))}
+            </div>
+
+            {/* 7. a foto, sem nenhum filtro de cor/brilho. O PNG recortado vai direto, só com luz de contorno
+                   azul (drop-shadow) e uma dissolução na base, onde a imagem original termina em corte reto */}
+            <div
+                className="absolute inset-x-0 bottom-0 top-[-2%] flex justify-center portrait-float"
+                style={{
+                    transform: 'translate(calc(var(--px, 0) * 6px), calc(var(--py, 0) * 4px))',
+                    /* o brilho de contorno fica no pai: se ficasse na <img>, a máscara cortaria a sombra num retângulo */
+                    filter: 'drop-shadow(0 0 14px rgba(56,189,248,0.45)) drop-shadow(0 0 2px rgba(125,211,252,0.6))'
+                }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                    src="/assets/images/anderson-portrait.webp"
+                    src="/assets/images/anderson-hero.png"
                     alt=""
                     draggable={false}
-                    className="relative w-full h-full object-cover"
+                    className="relative h-full w-auto max-w-none object-contain"
                     style={{
-                        /* bordas suavizadas em todos os lados: o respingo que encosta no limite da imagem
-                           dissolve no fundo em vez de terminar em linha reta */
-                        WebkitMaskImage: featherMask,
-                        maskImage: featherMask,
-                        WebkitMaskComposite: 'source-in',
-                        maskComposite: 'intersect'
+                        WebkitMaskImage: 'linear-gradient(to bottom, #000 0%, #000 86%, transparent 100%)',
+                        maskImage: 'linear-gradient(to bottom, #000 0%, #000 86%, transparent 100%)'
                     }} />
             </div>
 
-            {/* gentle wave lines along the bottom */}
-            <div className="absolute inset-x-[-10%] bottom-[-2%] h-[12%] overflow-hidden pointer-events-none" aria-hidden="true"
-                style={{ WebkitMaskImage: 'linear-gradient(to right, transparent, #000 20%, #000 80%, transparent)', maskImage: 'linear-gradient(to right, transparent, #000 20%, #000 80%, transparent)' }}>
-                <svg className="water-wave absolute bottom-0 left-0 h-full w-[200%]" style={{ ['--dur' as string]: '14s' }} viewBox="0 0 200 40" preserveAspectRatio="none">
-                    <path d={wavePath} fill="none" stroke="#06B6D4" strokeOpacity="0.35" strokeWidth="0.6" />
-                </svg>
-                <svg className="water-wave absolute bottom-0 left-0 h-[80%] w-[200%]" style={{ ['--dur' as string]: '22s' }} viewBox="0 0 200 40" preserveAspectRatio="none">
-                    <path d={wavePath} fill="none" stroke="#A78BFA" strokeOpacity="0.3" strokeWidth="0.5" />
-                </svg>
-            </div>
+            {/* 8. brilho de topo: luz fria vinda de cima, só no ar ao redor da cabeça (não toca a foto) */}
+            <div
+                className="absolute left-1/2 top-[-14%] w-[90%] h-[36%] -translate-x-1/2 pointer-events-none"
+                aria-hidden="true"
+                style={{
+                    background: 'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(125,211,252,0.16), transparent 70%)',
+                    filter: 'blur(14px)',
+                    mixBlendMode: 'screen'
+                }} />
         </div>
     );
 }

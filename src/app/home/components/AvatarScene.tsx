@@ -4,7 +4,6 @@ import React, { useRef } from 'react';
 
 type GemProps = { color: string; className?: string; style?: React.CSSProperties };
 
-/** Faceted gem ("pedra") drawn with flat polygons. */
 function Gem({ color, className, style }: GemProps) {
     const facets: [string, number][] = [
         ['30,20 70,20 60,40 40,40', 0.95],

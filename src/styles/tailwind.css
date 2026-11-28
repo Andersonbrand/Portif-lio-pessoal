@@ -467,6 +467,18 @@ body {
     .water-bubble, .water-ripple, .water-wave, .portrait-float { animation: none; }
 }
 
+/* ─── Portrait scene: halo e código flutuante ─── */
+@keyframes portraitHalo { 0%, 100% { opacity: 0.85; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
+.portrait-halo { animation: portraitHalo 6s ease-in-out infinite; }
+@keyframes codeDrift {
+    0%, 100% { transform: translateY(0); opacity: 0.25; }
+    50% { transform: translateY(-14px); opacity: 0.8; }
+}
+.code-drift { animation: codeDrift var(--dur, 10s) ease-in-out var(--delay, 0s) infinite; text-shadow: 0 0 10px rgba(6,182,212,.5); }
+@media (prefers-reduced-motion: reduce) {
+    .portrait-halo, .code-drift { animation: none; }
+}
+
 /* ─── Code scene (seção Sobre) ─── */
 @keyframes codeCursorBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 .code-cursor {
